@@ -102,7 +102,8 @@ class Rivescript
             }
         }
 
-        return 'No response found.';
+//         return 'No response found.';
+        return '';
     }
 
     public function parseReply($message, $data = array())
