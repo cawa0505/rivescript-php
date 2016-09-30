@@ -151,7 +151,7 @@ class Rivescript
             $message = str_replace($find, $replace, $message);
         }
 
-        $message = preg_replace("/[^A-Za-z0-9 ]/", '', $message);
+//         $message = preg_replace("/[^A-Za-z0-9 ]/", '', $message);
 
         return $message;
     }
