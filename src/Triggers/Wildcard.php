@@ -17,7 +17,9 @@ class Wildcard implements Trigger
         ],
         'alphanumeric' => [
             'pattern'     => '/(\*)/',
-            'replacement' => '[[:alnum:]]+'
+//             'replacement' => '[[:alnum:]]+'
+            'replacement' => '.*?'
+
         ]
     ];
 
