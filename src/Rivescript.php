@@ -146,7 +146,7 @@ class Rivescript
 
     protected function prepareMessage($message)
     {
-        $message = strtolower($message);
+//         $message = strtolower($message);
 
         foreach ($this->tree['begin']['sub'] as $find => $replace) {
             $message = str_replace($find, $replace, $message);
