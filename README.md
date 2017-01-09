@@ -1,5 +1,4 @@
 # RiveScript-PHP
-[![Travis CI](https://img.shields.io/travis/vulcan-project/rivescript-php.svg?style=flat-square)](https://travis-ci.org/vulcan-project/rivescript-php)
 [![Source](http://img.shields.io/badge/source-vulcan--project/rivescript--php-blue.svg?style=flat-square)](https://github.com/vulcan-project/rivescript-php)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://tldrlegal.com/license/mit-license)
 
