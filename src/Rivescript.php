@@ -147,12 +147,14 @@ class Rivescript
     protected function prepareMessage($message)
     {
 //         $message = strtolower($message);
+        $message = mb_strtolower($message);
 
         foreach ($this->tree['begin']['sub'] as $find => $replace) {
             $message = str_replace($find, $replace, $message);
         }
 
 //         $message = preg_replace("/[^A-Za-z0-9 ]/", '', $message);
+        $message = preg_replace('/[^\pL\d\s]+/u', '', $message);
 
         return $message;
     }
