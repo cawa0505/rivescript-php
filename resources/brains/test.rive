@@ -104,11 +104,26 @@
 + my name is _
 - Nice to meet you, <star>!
 
++ * told me to say *
+- Why would <star1> tell you to say "<star2>"?
+- Did you "<star2>" after <star1> told you to?
+
++ where is *
+- Where it belongs.
+- Where you left it.
+- Where the heart is.
+
++ who is *
+- I don't know who <star> is.
+
 + i hate you
 - Well then, I won't talk to you until you take that back. {topic=apology}
 
 + *
 - I don't understand
+- What do you mean?
+- Huh?
+- I'm sorry, but I don't understand
 
 // TOPICS
 

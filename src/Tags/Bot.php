@@ -21,10 +21,11 @@ class Bot implements Tag
         $this->tree    = $tree;
         $this->pattern = regex()
             ->find('<bot ')
-            ->anythingBut('>')
-            ->asGroup()
+            ->openGroup()
+                ->anythingBut('>')
+            ->closeGroup()
             ->then('>')
-            ->getRegExp();
+            ->stopAtFirst();
     }
 
     /**
@@ -36,12 +37,10 @@ class Bot implements Tag
      */
     public function parse($response, $data)
     {
-        $matches = $this->pattern->findIn($response);
+        if ($this->pattern->test($response)) {
+            $matches = $this->pattern->match($response);
 
-        if (isset($matches[1])) {
-            $response = $this->pattern->replace($response, function($match) use ($matches) {
-                return $this->tree['begin']['var'][$matches[1]];
-            });
+            $response = $this->pattern->replace($response, $this->tree['begin']['var'][$matches[1]]);
         }
 
         return [

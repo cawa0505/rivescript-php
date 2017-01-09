@@ -6,20 +6,26 @@ use Vulcan\Rivescript\Contracts\Trigger;
 
 class Wildcard implements Trigger
 {
-    protected $types = [
-        'alpha' => [
-            'pattern'     => '/(\_)/',
-            'replacement' => '[[:alpha:]]+'
+    protected $replacements = [
+        [
+            'pattern'     => '/^\*$/',
+            'replacement' => '<zerowidthstar>'
         ],
-        'numeric' => [
-            'pattern'     => '/(\#)/',
-            'replacement' => '[[:digit:]]+'
+        [
+            'pattern'     => '/\*/',
+            'replacement' => '.+?'
         ],
-        'alphanumeric' => [
-            'pattern'     => '/(\*)/',
-//             'replacement' => '[[:alnum:]]+'
+        [
+            'pattern'     => '/#/',
+            'replacement' => '\\d+?'
+        ],
+        [
+            'pattern'     => '/_/',
+            'replacement' => '\\w+?'
+        ],
+        [
+            'pattern'     => '/<zerowidthstar>/',
             'replacement' => '.*?'
-
         ]
     ];
 
@@ -33,8 +39,8 @@ class Wildcard implements Trigger
      */
     public function parse($key, $trigger, $message)
     {
-        foreach ($this->types as $type) {
-            $parsedTrigger = preg_replace($type['pattern'], '('.$type['replacement'].')', $trigger);
+        foreach ($this->replacements as $replacement) {
+            $parsedTrigger = preg_replace($replacement['pattern'], '('.$replacement['replacement'].')', $trigger);
 
             if (@preg_match('#^'.$parsedTrigger.'$#', $message, $stars)) {
                 array_shift($stars);

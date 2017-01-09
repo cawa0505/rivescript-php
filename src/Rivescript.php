@@ -29,8 +29,6 @@ class Rivescript
 
     /**
      * Create a new Rivescript instance.
-     *
-     * @param Parser  $parser
      */
     public function __construct()
     {
@@ -47,7 +45,7 @@ class Rivescript
     /**
      * Load a RiveScript document from a file.
      *
-     * @param array|string  $file
+     * @param  array|string  $files
      */
     public function load($files)
     {

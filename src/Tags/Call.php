@@ -6,18 +6,24 @@ use Vulcan\Rivescript\Contracts\Tag;
 
 class Call implements Tag
 {
-    /**
-     * Regex expression pattern.
-     *
-     * @var string
-     */
-    public $pattern = '/<call>(.*?)<\/call>/i';
-
     protected $tree;
 
+    /**
+     * Create a new Call instance.
+     *
+     * @param  array  $tree
+     */
     public function __construct($tree)
     {
-        $this->tree = $tree;
+        $this->tree    = $tree;
+        $this->pattern = regex()
+            ->find('<call>')
+            ->openGroup()
+                ->anything()
+            ->closeGroup()
+            ->then('</call>')
+            ->withAnyCase()
+            ->stopAtFirst();
     }
 
     /**
@@ -29,10 +35,10 @@ class Call implements Tag
      */
     public function parse($response, $data)
     {
-        preg_match_all($this->pattern, $response, $matches);
+        if ($this->pattern->test($response)) {
+            $matches = $this->pattern->match($response);
 
-        if (isset($matches[1][0])) {
-            $macro  = explode(' ', $matches[1][0]);
+            $macro  = explode(' ', $matches[1]);
             $object = $macro[0];
 
             unset($macro[0]);
@@ -47,7 +53,7 @@ class Call implements Tag
                 ob_end_clean();
             }
 
-            $search = $matches[0][0];
+            $search = $matches[0];
 
             if (isset($replace)) {
                 $response = str_replace($search, $replace, $response);
