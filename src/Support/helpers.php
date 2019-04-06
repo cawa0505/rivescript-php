@@ -58,7 +58,7 @@ if (! function_exists('regex')) {
      */
     function regex()
     {
-        return new VerbalExpressions();
+        return new VerbalExpressions;
     }
 }
 
