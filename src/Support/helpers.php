@@ -2,7 +2,7 @@
 
 use Vulcan\Rivescript\Support\Logger;
 use Vulcan\Rivescript\Support\Str;
-use Vulcan\VerbalExpressions\VerbalExpressions;
+use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 /**
  * Dump the passed variable(s) and end the script.
