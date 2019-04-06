@@ -12,7 +12,7 @@
     "require": {
         "php": ">=5.5.9",
         "symfony/console": ">=3.1",
-        "verbalexpressions/php-verbal-expressions": "^1.0.0"
+        "cawa0505/verbal-expressions-php": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0",
