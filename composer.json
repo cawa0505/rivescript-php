@@ -1,5 +1,5 @@
 {
-    "name": "vulcan/rivescript",
+    "name": "cawa0505/rivescript",
     "description": "RiveScript interpreter library for PHP with Laravel support. RiveScript is a scripting language for chatterbots, making it easy to write trigger/response pairs for building up a bot's intelligence.",
     "keywords": ["rivescript", "bot", "ai", "chatterbot", "vulcan"],
     "license": "MIT",
