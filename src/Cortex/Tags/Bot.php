@@ -65,9 +65,7 @@ class Bot extends Tag
                 if (count($match) === 4) {
                     $source = str_replace($match[0], $variables[$match[3]] ?? "undefined", $source);
                 } elseif (count($match) === 3) {
-                    [$key, $value] = $match;
-
-                    synapse()->memory->variables()->put($key, $value);
+                    synapse()->memory->variables()->put($match[1], $match[2]);
                     $source = str_replace($match[0], '', $source);
                 }
             }
