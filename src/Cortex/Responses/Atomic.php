@@ -38,7 +38,6 @@ class Atomic extends Response implements ResponseContract
     public function parse()
     {
         if ($this->responseQueueItem()->getCommand() === '-') {
-            synapse()->brain->say("Command Atomic WIN!! Source: {$this->source()}");
             return $this->source();
         }
 

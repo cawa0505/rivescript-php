@@ -83,6 +83,7 @@ $synapse->triggers = Axiom\Collections\Collection::make(
  * <get>       # Get user variables
  * {topic}     # Set user topic
  * <@>         # Inline redirection
+ * (@array)    # Arrays
  */
 $synapse->tags = Axiom\Collections\Collection::make(
     [
@@ -107,6 +108,7 @@ $synapse->tags = Axiom\Collections\Collection::make(
         'Get',
         'Topic',
         'InlineRedirect',
+        'ArrayTag'
         // call here
 
 
