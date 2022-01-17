@@ -60,3 +60,48 @@ EOF;
 
     $this->assertTrue($value);
 });
+
+
+it("Multiple array variable should return a random values.", function () {
+
+    $script = <<< EOF
+! array greek = alpha beta gamma
+! array test = testing trying
+! array format = <uppercase>|<lowercase>|<formal>|<sentence>
+
++ test random array
+- Testing (@greek) array.
+
++ test two random arrays
+- {formal}(@test){/formal} another (@greek) array.
+
++ test nonexistant array
+- This (@array) does not exist.
+
++ test more arrays
+- I'm (@test) more (@greek) (@arrays).
+
++ test weird syntax
+- This (@ greek) shouldn't work, and neither should this @test.
+
++ random format *
+- (@format)
+EOF;
+
+    $possibleResults = [
+        "testing another alpha array.",
+        "testing another beta array.",
+        "testing another gamma array.",
+        "trying another alpha array.",
+        "trying another beta array.",
+        "trying another gamma array."
+    ];
+
+    $this->rivescript->stream($script);
+
+    $reply = $this->rivescript->reply("test two random arrays");
+
+    $value = in_array($reply, $possibleResults, false);
+
+    $this->assertTrue($value);
+});
