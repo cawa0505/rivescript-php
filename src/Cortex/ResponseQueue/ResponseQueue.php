@@ -127,6 +127,7 @@ class ResponseQueue extends Collection
             }
         }
 
+
         return false;
     }
 

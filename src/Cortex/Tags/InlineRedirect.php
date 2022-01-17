@@ -80,7 +80,6 @@ class InlineRedirect extends Tag
             $topic = synapse()->memory->shortTerm()->get("topic");
 
             if (is_null($trigger) === false && is_null($key) === false && is_null($target) === false) {
-
                 $topic = synapse()->memory->shortTerm()->get("topic") ?: "random";
                 $trigger["redirect"] = $target;
 
@@ -88,7 +87,6 @@ class InlineRedirect extends Tag
                 synapse()->brain->topic($topic)->triggers()->put($key, $trigger);
                 $source = str_replace($matches[0], '', $source);
             } elseif (is_null($trigger) === true) {
-
                 $topic = synapse()->memory->shortTerm()->get("topic") ?: "random";
                 $trigger = synapse()->brain->topic($topic)->triggers()->get($key);
 

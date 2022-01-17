@@ -121,6 +121,7 @@ $synapse->responses = Axiom\Collections\Collection::make(
         'ContinueResponse',
         'Atomic',
         'Condition',
+        'Previous',
     ]
 );
 

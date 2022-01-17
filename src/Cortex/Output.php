@@ -112,6 +112,7 @@ class Output
             $this->output = false;
             return $this->output;
         }
+
         /**
          * Get the best suitable response from
          * the ResponseQueue.
@@ -123,10 +124,16 @@ class Output
          * It could be possible that tags have altered the trigger.
          * If so evaluate possible changes.
          */
-        $processedTrigger = synapse()->brain->topic()->triggers()->get($trigger);
+        $processedTrigger = synapse()->brain->topic()->triggers()->get($trigger, null);
 
         if (isset($processedTrigger['redirect'])) {
-            //$output .= $this->getResponse($processedTrigger['redirect']);
+
+            $target = synapse()->brain->topic()->triggers()->get($processedTrigger['redirect']);
+            if ($target === null) {
+                $this->output = false;
+                return $this->getResponse("*");
+            }
+
             /**
              * If we redirect from Trigger A to Trigger B the context of the
              * user input changes from the line that triggered "Trigger A" to
