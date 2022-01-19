@@ -64,7 +64,6 @@ class ArrayTag extends Tag
             foreach ($matches as $match) {
                 $name = $match[1];
                 if (($array = synapse()->memory->arrays()->get($name))) {
-
                     $rnd = array_rand($array, 1);
                     $replacement = $array[$rnd];
 

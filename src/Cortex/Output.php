@@ -127,7 +127,6 @@ class Output
         $processedTrigger = synapse()->brain->topic()->triggers()->get($trigger, null);
 
         if (isset($processedTrigger['redirect'])) {
-
             $target = synapse()->brain->topic()->triggers()->get($processedTrigger['redirect']);
             if ($target === null) {
                 $this->output = false;

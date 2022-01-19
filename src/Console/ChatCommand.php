@@ -75,8 +75,7 @@ class ChatCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-
-            $this->rivescript->onSay = function(string $msg, int $verbosity) use ($output) {
+            $this->rivescript->onSay = function (string $msg, int $verbosity) use ($output) {
                 $output->writeln("Say: {$msg}", $verbosity);
             };
 
@@ -98,8 +97,6 @@ class ChatCommand extends Command
             $output->writeln('');
 
             $this->waitForUserInput($input, $output);
-
-
         } catch (ParseException $e) {
             $error = "<error>{$e->getMessage()}</error>";
             $output->writeln($error);
