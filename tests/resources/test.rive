@@ -200,3 +200,27 @@
 ^ With her forcefield around her,\n
 ^ the Spider, the bounder,\n
 ^ Is not in the picture today.
+
+
+// Alternates responses
+
++ what (are|is) you
+- I am a robot.
+
++ Give me a (single) digit
+- How about 109.
+
++ do you have (one|multiple) (beer|unicorn)
+- Yes i do.
+
++ what time [is|will] pass
+- Right now that is 16:35
+
++ Got my self a (man|woman) and i [love|hate] it
+- Oh that is not good
+
++ i got [set|group] of [marbles|gees]
+- Do you now?
+
++ hello [moon]
+- Why the moon?

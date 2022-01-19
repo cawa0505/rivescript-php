@@ -34,24 +34,25 @@ $synapse = new Axiom\Rivescript\Cortex\Synapse();
 
 $synapse->commands = Axiom\Collections\Collection::make(
     [
-        'VariablePerson',
-        'VariableSubstitute',
-        'VariableGlobal',
-        'VariableLocal',
-        'VariableArray',
-        'Variable',
-        'Redirect',
-        'Response',
-        'Topic',
-        'Trigger',
+        "VariablePerson",
+        "VariableSubstitute",
+        "VariableGlobal",
+        "VariableLocal",
+        "VariableArray",
+        "Variable",
+        "Redirect",
+        "Response",
+        "Topic",
+        "Trigger",
     ]
 );
 
 $synapse->triggers = Axiom\Collections\Collection::make(
     [
-        'Atomic',
-        'Wildcard',
-        'Arrays'
+        "Atomic",
+        "Wildcard",
+        "Alternation",
+        "Arrays"
     ]
 );
 
@@ -60,6 +61,7 @@ $synapse->triggers = Axiom\Collections\Collection::make(
  * The order that the tags should be processed within a response or anywhere else that a tag is allowed is as follows:
  *
  * <star>      # Static text macros
+ * <botstar>/<botstarN> # will match any wildcards that matched the bot's previous response.
  * <input>     #
  * <reply>     #
  * <id>        #
@@ -85,54 +87,52 @@ $synapse->triggers = Axiom\Collections\Collection::make(
  * <@>         # Inline redirection
  * (@array)    # Arrays
  */
-$synapse->tags = Axiom\Collections\Collection::make(
-    [
-        'Star',
-        'Input',
-        'Reply',
+$synapse->tags = Axiom\Collections\Collection::make([
+        "Star",
+        "BotStar",
+        "Input",
+        "Reply",
         "Id",
-        'SpecialChars',
-        'Random',
-        'Bot',
-        'Env',
-        'Person',
-        'Formal',
-        'Sentence',
-        'Uppercase',
-        'Lowercase',
-        'Set',
-        'Add',
-        'Sub',
-        'Mult',
-        'Div',
-        'Get',
-        'Topic',
-        'InlineRedirect',
-        'ArrayTag'
+        "SpecialChars",
+        "Random",
+        "Bot",
+        "Env",
+        "Person",
+        "Formal",
+        "Sentence",
+        "Uppercase",
+        "Lowercase",
+        "Set",
+        "Add",
+        "Sub",
+        "Mult",
+        "Div",
+        "Get",
+        "Topic",
+        "InlineRedirect",
+        "ArrayTag",
         // call here
-
-
     ]
 );
 
 $synapse->responses = Axiom\Collections\Collection::make(
     [
-        'Weighted',
-        'ContinueResponse',
-        'Atomic',
-        'Condition',
-        'Previous',
+        "Weighted",
+        "ContinueResponse",
+        "Atomic",
+        "Condition",
+        "Previous",
     ]
 );
 
 $synapse->conditions = Axiom\Collections\Collection::make(
     [
-        'Equals',
-        'NotEquals',
-        'LessThan',
-        'LessOrEqualTo',
-        'GreaterThan',
-        'GreaterThanOrEqual',
+        "Equals",
+        "NotEquals",
+        "LessThan",
+        "LessOrEqualTo",
+        "GreaterThan",
+        "GreaterThanOrEqual",
     ]
 );
 

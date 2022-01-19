@@ -8,20 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\Cortex\Response;
+namespace Tests\Cortex\Tags;
 
 use Axiom\Rivescript\Rivescript;
 
 uses()
     ->beforeEach(function () {
         $this->rivescript = new Rivescript();
-        $this->rivescript->load(__DIR__.'/../../../resources/test.rive');
+        $this->rivescript->load(__DIR__.'/../../resources/tags/tags.rive');
     })
-    ->group('responses');
+    ->group('tags');
 
-it('prioritizes the correct weight', function () {
-    $expected = "Hello human.";
-    $actual = $this->rivescript->reply('hello bot');
+it("Should have a botstar test", function() {
 
-    $this->assertEquals($expected, $actual);
 });
