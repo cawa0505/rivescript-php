@@ -47,7 +47,7 @@ class Wildcard extends Trigger
             '/\*$/' => '.*?',
             '/\*/' => '\\w+?',
             '/#/' => '\\d+?',
-            '/_/' => '[a-z]?',
+            '/_/' => '(.*?[a-zA-Z])',
             '/<zerowidthstar>/' => '^\*$',
         ];
 
@@ -62,6 +62,8 @@ class Wildcard extends Trigger
                 array_shift($wildcards);
 
                 $wildcards = Collection::make($wildcards)->flatten()->all();
+
+                print_r($wildcards);
 
                 synapse()->memory->shortTerm()->put("wildcards", $wildcards);
 
