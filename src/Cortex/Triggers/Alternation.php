@@ -41,7 +41,9 @@ class Alternation extends Trigger
      *
      * @var string
      */
-    protected string $pattern = "/(\()(?!\@)(.+?=*)(\))/ui";
+//    protected string $pattern = "/(\()(?!\@)(.+?=*)(\))/ui"; // oud alleen alternation
+//    protected string $pattern = "/((\(|\[)(?!\@)(.+?=*)(\)|]))/ui"; // goed
+    protected string $pattern = "/(\(|\[)(?!@)(.+?=*)(\)|\])/iu"; // goed
 
     /**
      * Parse the trigger.
@@ -67,14 +69,29 @@ class Alternation extends Trigger
              *
              * "I {0} a robot. I like {1}"
              */
+
             foreach ($matches as $index => $match) {
                 $set = explode("|", $match[2]);
 
                 if (count($set) > 0) {
-                    $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
-                    $sets [] = $set;
+                    if ($match[1] === '(') {
+                        $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
+                        $sets [] = $set;
+                    }
+
+                    /**
+                     * We need to add possible optionals to the
+                     * set as well. This programming is a bit odd
+                     * but there is no way around it.
+                     */
+                    if ($match[1] === '[') {
+                        $set[] = "__\x01\x20__";
+                        $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
+                        $sets [] = $set;
+                    }
                 }
             }
+
 
             $combinations = $this->getCombinations(...$sets);
 
@@ -87,7 +104,10 @@ class Alternation extends Trigger
                         $tmp = str_replace("{{$index}}", $string, $tmp);
                     }
 
-                    $sentences [] = trim($tmp);
+                    $tmp = str_replace(["__\x01\x20__ ", "__\x01\x20__"], "", $tmp);
+                    $tmp = trim($tmp);
+
+                    $sentences [] = $tmp;
                 }
 
                 $result = array_filter($sentences, static function (string $sentence) use ($input) {

@@ -51,9 +51,9 @@ $synapse->triggers = Axiom\Collections\Collection::make(
     [
         "Atomic",
         "Wildcard",
+        "Arrays",
         "Alternation",
         "Optional",
-        "Arrays"
     ]
 );
 
@@ -89,31 +89,30 @@ $synapse->triggers = Axiom\Collections\Collection::make(
  * (@array)    # Arrays
  */
 $synapse->tags = Axiom\Collections\Collection::make([
-        "Star",
-        "BotStar",
-        "Input",
-        "Reply",
-        "Id",
-        "SpecialChars",
-        "Random",
-        "Bot",
-        "Env",
-        "Person",
-        "Formal",
-        "Sentence",
-        "Uppercase",
-        "Lowercase",
-        "Set",
-        "Add",
-        "Sub",
-        "Mult",
-        "Div",
-        "Get",
-        "Topic",
-        "InlineRedirect",
-        "ArrayTag",
-        // call here
-    ]);
+    "Star",
+    "BotStar",
+    "Input",
+    "Reply",
+    "Id",
+    "SpecialChars",
+    "Random",
+    "Bot",
+    "Env",
+    "Person",
+    "Formal",
+    "Sentence",
+    "Uppercase",
+    "Lowercase",
+    "Set",
+    "Add",
+    "Sub",
+    "Mult",
+    "Div",
+    "Get",
+    "Topic",
+    "InlineRedirect",
+    "ArrayTag",
+]);
 
 $synapse->responses = Axiom\Collections\Collection::make(
     [

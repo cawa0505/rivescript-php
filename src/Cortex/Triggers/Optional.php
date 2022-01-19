@@ -101,6 +101,9 @@ class Optional extends Trigger
                         }
                     }
 
+
+                    $tmp = preg_replace('/(\()(?!\@)(.+?=*)(\))/ui', "", $tmp);
+
                     $sentences [] = trim($tmp);
                 }
 

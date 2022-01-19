@@ -44,19 +44,14 @@ class Wildcard extends Trigger
         $trigger = $this->parseTags($trigger, $input);
 
         $wildcards = [
-//            '/_/' => '(.*?[a-zA-Z])',
             '/_/' => '[^\s\d]+?',
-//            '/#/' => '\\d+?',
             '/#/' => '\\d+?',
             '/\*/' => '.*?',
-           // '/\*/' => '\\w+?',
-//            '/\*$/' => '.*?',
             '/<zerowidthstar>/' => '^\*$',
         ];
 
         foreach ($wildcards as $pattern => $replacement) {
             $parsedTrigger = preg_replace($pattern, '(' . $replacement . ')', $trigger);
-
 
             if ($parsedTrigger === $trigger) {
                 continue;
