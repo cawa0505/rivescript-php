@@ -44,15 +44,19 @@ class Wildcard extends Trigger
         $trigger = $this->parseTags($trigger, $input);
 
         $wildcards = [
-            '/\*$/' => '.*?',
-            '/\*/' => '\\w+?',
+//            '/_/' => '(.*?[a-zA-Z])',
+            '/_/' => '[\s\d]+?',
+//            '/#/' => '\\d+?',
             '/#/' => '\\d+?',
-            '/_/' => '(.*?[a-zA-Z])',
+            '/\*/' => '.*?',
+           // '/\*/' => '\\w+?',
+//            '/\*$/' => '.*?',
             '/<zerowidthstar>/' => '^\*$',
         ];
 
         foreach ($wildcards as $pattern => $replacement) {
             $parsedTrigger = preg_replace($pattern, '(' . $replacement . ')', $trigger);
+
 
             if ($parsedTrigger === $trigger) {
                 continue;
@@ -62,8 +66,6 @@ class Wildcard extends Trigger
                 array_shift($wildcards);
 
                 $wildcards = Collection::make($wildcards)->flatten()->all();
-
-                print_r($wildcards);
 
                 synapse()->memory->shortTerm()->put("wildcards", $wildcards);
 
