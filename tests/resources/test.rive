@@ -215,11 +215,13 @@
 
 // Optional responses
 
-+ One [optional] test
-- One optional response
++ What are your [phone] digits
+- They are +316123456789
 
-+ Two [optional|opt] test
-- Two optional response
++ Does your home have a [movie|recreation] room
+- Yes it does actually
 
-+ Two sets [special] sets of [sheep|shuffles]
-- Are they not cute?
++ [please|can you] ask me a question about [something] anything
+- Why is the sky blue
+
+

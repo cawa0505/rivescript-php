@@ -14,10 +14,14 @@ use Axiom\Rivescript\Cortex\Input;
 use Axiom\Rivescript\Traits\Regex;
 
 /**
- * Arrays class
+ * Optional class
  *
- * The Optional class determines if a provided trigger
- * is an Optional type.
+ * An Optional trigger is "trigger" sentence that has optional
+ * keywords. The optional trigger will be valid when ever the
+ * optional keyword is used or not.
+ *
+ * Note: Optionals do NOT match like wildcards do. They do NOT go into the <star> tags. The reason for this is that
+ * optionals are optional, and won't always match anything if the client didn't actually say the optional word(s).
  *
  * PHP version 7.4 and higher.
  *
@@ -70,6 +74,12 @@ class Optional extends Trigger
             foreach ($matches as $index => $match) {
                 $set = explode("|", $match[2]);
 
+                /**
+                 * To the set we add and empty value. This will emulate
+                 * the optional keywords not being used.
+                 */
+                $set[] = "";
+
                 if (count($set) > 0) {
                     $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
                     $sets [] = $set;
@@ -85,9 +95,13 @@ class Optional extends Trigger
                     $tmp = $triggerString;
                     foreach ($combination as $index => $string) {
                         $tmp = str_replace("{{$index}}", $string, $tmp);
+
+                        if (empty($string) === true) {
+                            $tmp = str_replace("\x20\x20", " ", $tmp);
+                        }
                     }
 
-                    $sentences [] = $tmp;
+                    $sentences [] = trim($tmp);
                 }
 
                 $result = array_filter($sentences, static function (string $sentence) use ($input) {

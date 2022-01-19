@@ -22,29 +22,45 @@ uses()
 
 it("Should work with one single item", function () {
 
-    $expected = "One optional response";
-    $actual = $this->rivescript->reply("One optional test");
+    $expected = "They are +316123456789";
+    $actual = $this->rivescript->reply("What are your phone digits");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("What are your digits");
     $this->assertEquals($expected, $actual);
 });
 
-it("Should work with multiple items", function () {
+it("Should work with multiple optional items", function () {
 
-    $expected = "Two optional response";
-    $actual = $this->rivescript->reply("Two optional test");
+    $expected = "Yes it does actually";
+    $actual = $this->rivescript->reply("Does your home have a movie room");
     $this->assertEquals($expected, $actual);
 
-    $expected = "Two optional response";
-    $actual = $this->rivescript->reply("Two opt test");
+    $actual = $this->rivescript->reply("Does your home have a recreation room");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("Does your home have a room");
     $this->assertEquals($expected, $actual);
 });
 
-it("Should work with multiple sets", function () {
+it("Should work with multiple optional item sets", function () {
 
-    $expected = "Are they not cute?";
-    $actual = $this->rivescript->reply("Two sets special sets of sheep");
+    $expected = "Why is the sky blue";
+    $actual = $this->rivescript->reply("please ask me a question about something anything");
     $this->assertEquals($expected, $actual);
 
-    $expected = "Are they not cute?";
-    $actual = $this->rivescript->reply("Two sets special sets of shuffles");
+    $actual = $this->rivescript->reply("please ask me a question about anything");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("can you ask me a question about something anything");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("can you ask me a question about anything");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("ask me a question about something anything");
+    $this->assertEquals($expected, $actual);
+
+    $actual = $this->rivescript->reply("ask me a question about anything");
     $this->assertEquals($expected, $actual);
 });

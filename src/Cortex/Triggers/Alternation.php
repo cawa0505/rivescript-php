@@ -14,7 +14,7 @@ use Axiom\Rivescript\Cortex\Input;
 use Axiom\Rivescript\Traits\Regex;
 
 /**
- * Arrays class
+ * Alternation class
  *
  * The Alternation class determines if a provided trigger
  * is an Alternation.
@@ -87,7 +87,7 @@ class Alternation extends Trigger
                         $tmp = str_replace("{{$index}}", $string, $tmp);
                     }
 
-                    $sentences [] = $tmp;
+                    $sentences [] = trim($tmp);
                 }
 
                 $result = array_filter($sentences, static function (string $sentence) use ($input) {
