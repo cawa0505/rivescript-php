@@ -213,14 +213,13 @@
 + do you have (one|multiple) (beer|unicorn)
 - Yes i do.
 
-+ what time [is|will] pass
-- Right now that is 16:35
+// Optional responses
 
-+ Got my self a (man|woman) and i [love|hate] it
-- Oh that is not good
++ One [optional] test
+- One optional response
 
-+ i got [set|group] of [marbles|gees]
-- Do you now?
++ Two [optional|opt] test
+- Two optional response
 
-+ hello [moon]
-- Why the moon?
++ Two sets [special] sets of [sheep|shuffles]
+- Are they not cute?

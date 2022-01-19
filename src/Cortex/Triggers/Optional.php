@@ -16,8 +16,8 @@ use Axiom\Rivescript\Traits\Regex;
 /**
  * Arrays class
  *
- * The Alternation class determines if a provided trigger
- * is an Alternation.
+ * The Optional class determines if a provided trigger
+ * is an Optional type.
  *
  * PHP version 7.4 and higher.
  *
@@ -28,7 +28,7 @@ use Axiom\Rivescript\Traits\Regex;
  * @link     https://github.com/axiom-labs/rivescript-php
  * @since    0.4.0
  */
-class Alternation extends Trigger
+class Optional extends Trigger
 {
     use Regex;
 
@@ -41,7 +41,7 @@ class Alternation extends Trigger
      *
      * @var string
      */
-    protected string $pattern = "/(\()(?!\@)(.+?=*)(\))/ui";
+    protected string $pattern = "/(\[)(?!\@)(.+?=*)(\])/ui";
 
     /**
      * Parse the trigger.
