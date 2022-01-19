@@ -241,6 +241,10 @@ class Rivescript extends ContentLoader
 
         $output = $output->process();
 
+        if (empty($output)) {
+            $output = $this->errors['replyNotMatched'];
+        }
+
         synapse()->memory->inputs()->push($msg);
         synapse()->memory->replies()->push($output);
 

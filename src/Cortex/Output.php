@@ -39,7 +39,7 @@ class Output
      *
      * @var string
      */
-    protected string $output = 'Error: Response could not be determined.';
+    protected string $output = '';
 
     /**
      * Keep track of the recursion
