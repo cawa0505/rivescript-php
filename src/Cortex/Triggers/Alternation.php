@@ -36,8 +36,8 @@ class Alternation extends Trigger
      * @var array|string[]
      */
     protected array $signatures = [
-        'alternation' => "__\x01\x20__",
-        'optional' => "__\x01\x21__",
+        'alternation' => "__\x01\x02__",
+        'optional' => "__\x02\x03__",
     ];
 
     /**
@@ -156,6 +156,7 @@ class Alternation extends Trigger
         $with = explode(" ", $withSignature);
         $without = explode(" ", $withoutSignature);
 
+       // echo "{$withSignature} vs {$withoutSignature}\n";
         $max = count($with);
         for ($i = 0; $i < $max; $i++) {
             if (isset($without[$i]) === false) {
