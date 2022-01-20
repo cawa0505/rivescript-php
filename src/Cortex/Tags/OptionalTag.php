@@ -35,14 +35,14 @@ class OptionalTag extends Tag
      *
      * @var array<string>
      */
-    protected array $allowedSources = ["response"];
+    protected array $allowedSources = ["trigger", "response"];
 
     /**
      * Regex expression pattern.
      *
      * @var string
      */
-    protected string $pattern = "/\(@(.+?)\)/ui";
+    protected string $pattern = "/(\[)(?!\@)(.+?=*)(\])/ui";
 
     /**
      * Parse the source.
@@ -58,21 +58,96 @@ class OptionalTag extends Tag
             return $source;
         }
 
-        if ($this->hasMatches($source)) {
-            $matches = $this->getMatches($source);
+        if ($this->matchesPattern($this->pattern, $source) === true) {
+            $triggerString = $source;
+            $matches = $this->getMatchesFromPattern($this->pattern, $triggerString);
+            $sets = [];
 
-            foreach ($matches as $match) {
-                $name = $match[1];
-                if (($array = synapse()->memory->arrays()->get($name))) {
-                    $rnd = array_rand($array, 1);
-                    $replacement = $array[$rnd];
+            /**
+             * Replace every "set" in the trigger to their index number
+             * found in the string.
+             *
+             * Example:
+             *
+             * "I (am|love) a robot. I like (my|style)"
+             *
+             * Will be replaced with:
+             *
+             * "I {0} a robot. I like {1}"
+             */
+            foreach ($matches as $index => $match) {
+                $set = explode("|", $match[2]);
 
-                    $source = str_replace("(@$name)", $replacement, $source);
+                /**
+                 * To the set we add and empty value. This will emulate
+                 * the optional keywords not being used.
+                 */
+                $set[] = "";
+
+                if (count($set) > 0) {
+                    $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
+                    $sets [] = $set;
+                }
+            }
+
+            $combinations = $this->getCombinations(...$sets);
+
+            if (count($combinations) > 0) {
+                $sentences = [];
+
+                foreach ($combinations as $combination) {
+                    $tmp = $triggerString;
+                    foreach ($combination as $index => $string) {
+                        $tmp = str_replace("{{$index}}", $string, $tmp);
+
+                        if (empty($string) === true) {
+                            $tmp = str_replace("\x20\x20", " ", $tmp);
+                        }
+                    }
+
+                    $tmp = preg_replace('/(\()(?!\@)(.+?=*)(\))/ui', "", $tmp);
+
+                    $sentences [] = trim($tmp);
+                }
+
+                $result = array_filter($sentences, static function (string $sentence) use ($input) {
+                    return (strtolower($sentence) === strtolower($input->source()));
+                });
+
+                if (count($result) > 0) {
+                    return $input->source();
                 }
             }
         }
-
         return $source;
+    }
+
+    /**
+     * Create a set of possible combinations for given arrays.
+     *
+     * Note: This function is taken from stackoverflow.com
+     * first posted by Guilhermo Luna and later edited by user Amlette.
+     *
+     * @see https://stackoverflow.com/questions/8567082/how-to-generate-in-php-all-combinations-of-items-in-multiple-arrays/33259643#33259643
+     *
+     * @param array ...$arrays A set of arrays to combine.
+     *
+     * @return array|array[]
+     *
+     */
+    private function getCombinations(array ...$arrays): array
+    {
+        $result = [[]];
+        foreach ($arrays as $property => $property_values) {
+            $tmp = [];
+            foreach ($result as $result_item) {
+                foreach ($property_values as $property_value) {
+                    $tmp[] = array_merge($result_item, [$property => $property_value]);
+                }
+            }
+            $result = $tmp;
+        }
+        return $result;
     }
 
     /**
@@ -82,6 +157,6 @@ class OptionalTag extends Tag
      */
     public function getTagName(): string
     {
-        return "array";
+        return "optional";
     }
 }

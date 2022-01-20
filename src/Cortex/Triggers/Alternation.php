@@ -65,6 +65,7 @@ class Alternation extends Trigger
     {
         $trigger = $this->parseTags($trigger, $input);
 
+        echo "-->{$trigger}\n";
         if ($this->matchesPattern($this->pattern, $trigger) === true) {
             $triggerString = $trigger;
             $matches = $this->getMatchesFromPattern($this->pattern, $triggerString);
@@ -90,6 +91,7 @@ class Alternation extends Trigger
                     if ($match[1] === '(') {
                         foreach ($set as $setIndex => $item) {
                             $set[$setIndex] = $this->signatures['alternation'] . $item;
+                            $set[$setIndex] = str_replace(" ", $this->signatures['alternation'], $set[$setIndex]);
                         }
                         $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
                         $sets [] = $set;
@@ -157,6 +159,8 @@ class Alternation extends Trigger
         $with = explode(" ", $withSignature);
         $without = explode(" ", $withoutSignature);
         $max = count($with);
+
+        // FIXME on "Can you ask me a question?"
 
         for ($i = 0; $i < $max; $i++) {
             if (isset($without[$i]) === false) {
