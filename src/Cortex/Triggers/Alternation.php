@@ -101,13 +101,12 @@ class Alternation extends Trigger
                      * but there is no way around it.
                      */
                     if ($match[1] === '[') {
-                        $set[] = $this->signatures['optional']; // "__\x01\x20__";
+                        $set[] = $this->signatures['optional'];
                         $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
                         $sets [] = $set;
                     }
                 }
             }
-
 
             $combinations = $this->getCombinations(...$sets);
 
