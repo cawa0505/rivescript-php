@@ -33,6 +33,14 @@ class Alternation extends Trigger
     use Regex;
 
     /**
+     * @var array|string[]
+     */
+    protected array $signatures = [
+        'alternation' => "__\x01\x20__",
+        'optional' => "__\x01\x21__",
+    ];
+
+    /**
      * The Regex pattern to find sets
      * in the trigger.
      *
@@ -43,6 +51,9 @@ class Alternation extends Trigger
      */
 //    protected string $pattern = "/(\()(?!\@)(.+?=*)(\))/ui"; // oud alleen alternation
 //    protected string $pattern = "/((\(|\[)(?!\@)(.+?=*)(\)|]))/ui"; // goed
+    /**
+     * @var string
+     */
     protected string $pattern = "/(\(|\[)(?!@)(.+?=*)(\)|\])/iu"; // goed
 
     /**
@@ -75,6 +86,9 @@ class Alternation extends Trigger
 
                 if (count($set) > 0) {
                     if ($match[1] === '(') {
+                        foreach ($set as $setIndex => $item) {
+                            $set[$setIndex] = $this->signatures['alternation'] . $item;
+                        }
                         $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
                         $sets [] = $set;
                     }
@@ -85,7 +99,7 @@ class Alternation extends Trigger
                      * but there is no way around it.
                      */
                     if ($match[1] === '[') {
-                        $set[] = "__\x01\x20__";
+                        $set[] = $this->signatures['optional']; // "__\x01\x20__";
                         $triggerString = str_replace($match[0], "{{$index}}", $triggerString);
                         $sets [] = $set;
                     }
@@ -104,14 +118,20 @@ class Alternation extends Trigger
                         $tmp = str_replace("{{$index}}", $string, $tmp);
                     }
 
-                    $tmp = str_replace(["__\x01\x20__ ", "__\x01\x20__"], "", $tmp);
+                    $tmp = str_replace([$this->signatures['optional'] . " ", $this->signatures['optional']], "", $tmp);
                     $tmp = trim($tmp);
 
                     $sentences [] = $tmp;
                 }
 
-                $result = array_filter($sentences, static function (string $sentence) use ($input) {
-                    return (strtolower($sentence) === strtolower($input->source()));
+                $signature = $this->signatures['alternation'];
+                $cmp = [$this, 'isMatchesWithoutSignature'];
+
+                $result = array_filter($sentences, static function (string $sentence) use ($input, $signature, $cmp) {
+                    if (strpos($sentence, $signature) > -1) {
+                        return $cmp(strtolower($sentence), strtolower($input->source()));
+                    }
+                    return false;
                 });
 
                 if (count($result) > 0) {
@@ -120,6 +140,37 @@ class Alternation extends Trigger
             }
         }
         return false;
+    }
+
+    /**
+     * Find out if 2 string match exactly if the alternation signature
+     * was removed.
+     *
+     * @param string $withSignature    The string with signatures before alternatives.
+     * @param string $withoutSignature The string without signatures.
+     *
+     * @return bool
+     */
+    private function isMatchesWithoutSignature(string $withSignature, string $withoutSignature): bool
+    {
+        $with = explode(" ", $withSignature);
+        $without = explode(" ", $withoutSignature);
+
+        $max = count($with);
+        for ($i = 0; $i < $max; $i++) {
+            if (isset($without[$i]) === false) {
+                return false;
+            }
+
+            $strWith = str_replace($this->signatures['alternation'], "", $with[$i]);
+            $strWithout = $without[$i];
+
+            if ($strWith !== $strWithout) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

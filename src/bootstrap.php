@@ -53,7 +53,7 @@ $synapse->triggers = Axiom\Collections\Collection::make(
         "Wildcard",
         "Arrays",
         "Alternation",
-        "Optional",
+//        "Optional",
     ]
 );
 
