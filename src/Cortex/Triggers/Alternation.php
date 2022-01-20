@@ -63,6 +63,8 @@ class Alternation extends Trigger
      */
     public function parse(string $trigger, Input $input): bool
     {
+        $trigger = $this->parseTags($trigger, $input);
+
         if ($this->matchesPattern($this->pattern, $trigger) === true) {
             $triggerString = $trigger;
             $matches = $this->getMatchesFromPattern($this->pattern, $triggerString);
@@ -155,9 +157,8 @@ class Alternation extends Trigger
     {
         $with = explode(" ", $withSignature);
         $without = explode(" ", $withoutSignature);
-
-       // echo "{$withSignature} vs {$withoutSignature}\n";
         $max = count($with);
+
         for ($i = 0; $i < $max; $i++) {
             if (isset($without[$i]) === false) {
                 return false;
@@ -165,6 +166,10 @@ class Alternation extends Trigger
 
             $strWith = str_replace($this->signatures['alternation'], "", $with[$i]);
             $strWithout = $without[$i];
+
+            if ($strWith === "*") {
+                break;
+            }
 
             if ($strWith !== $strWithout) {
                 return false;

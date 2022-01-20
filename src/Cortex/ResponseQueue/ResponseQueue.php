@@ -122,6 +122,7 @@ class ResponseQueue extends Collection
                 $result = $class->parse();
 
                 if ($result !== false) {
+                    echo "Response: {$result}\n";
                     return $result;
                 }
             }
