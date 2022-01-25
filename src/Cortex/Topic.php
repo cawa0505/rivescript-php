@@ -50,6 +50,14 @@ class Topic
     public Collection $responses;
 
     /**
+     * This indicates if the > begin topic
+     * is ok to finish.
+     *
+     * @var bool
+     */
+    public bool $ok = false;
+
+    /**
      * Create a new Topic instance.
      *
      * @param string $name
@@ -145,5 +153,36 @@ class Topic
 
             $triggers->put($trigger, $data);
         });
+    }
+
+    public function isBegin(): bool
+    {
+        return ($this->name === "__begin__");
+    }
+
+    /**
+     * Set the ok value.
+     *
+     * @param bool $value Ok value true or false.
+     *
+     * @return void
+     */
+    public function setOk(bool $value = false): void
+    {
+        $this->ok = $value;
+    }
+
+    /**
+     * Indicate if this topic is ok to end
+     * or not.
+     *
+     * Note: This is only used for the __begin__
+     * topic.
+     *
+     * @return bool
+     */
+    public function isOk(): bool
+    {
+        return $this->ok;
     }
 }

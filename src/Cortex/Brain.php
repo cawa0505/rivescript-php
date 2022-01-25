@@ -81,6 +81,11 @@ class Brain
                 $line = fgets($stream);
                 $node = new Node($line, $lineNumber++);
 
+                $error = $node->checkSyntax();
+
+                if ($error) {
+                    $this->master->say("Error: {$error}");
+                }
                 if ($node->isInterrupted() === true || $node->isComment() === true || $node->isEmpty()) {
                     continue;
                 }

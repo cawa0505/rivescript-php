@@ -1,0 +1,20 @@
+> begin
+    + request
+    * <get name> eq undefined => {topic=newuser}{ok}
+    * <get name> ne undefined => Hello <get name>{ok}
+    - {ok}
+< begin
+
+> topic newuser
+    + my name is *
+    - <set name=<star>>Nice to meet you <star>!{topic=random}
+
+    + *
+    - before we start I need your username <get name>
+< topic
+
++ go
+- Hi {topic=newuser}
+
++ hello bot
+- Hello human.

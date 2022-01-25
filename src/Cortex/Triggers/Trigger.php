@@ -49,6 +49,6 @@ abstract class Trigger implements TriggerContract
             $trigger = $tagClass->parse($trigger, $input);
         });
 
-        return $trigger;
+        return trim($trigger);
     }
 }

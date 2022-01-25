@@ -65,7 +65,6 @@ class Alternation extends Trigger
     {
         $trigger = $this->parseTags($trigger, $input);
 
-        echo "-->{$trigger}\n";
         if ($this->matchesPattern($this->pattern, $trigger) === true) {
             $triggerString = $trigger;
             $matches = $this->getMatchesFromPattern($this->pattern, $triggerString);

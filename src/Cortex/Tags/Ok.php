@@ -2,7 +2,7 @@
 /*
  * This file is part of Rivescript-php
  *
- * (c) Shea Lewis <shea.lewis89@gmail.com>
+ * (c) Johnny Mast <mastjohnny@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,20 +13,20 @@ namespace Axiom\Rivescript\Cortex\Tags;
 use Axiom\Rivescript\Cortex\Input as SourceInput;
 
 /**
- * Topic class
+ * Ok class
  *
- * This class is responsible parsing the {topic} tag.
+ * This class is responsible parsing the {ok} tag.
  *
  * PHP version 7.4 and higher.
  *
  * @category Core
  * @package  Cortext\Tags
- * @author   Shea Lewis <shea.lewis89@gmail.com>
+ * @author   Johnny Mast <mastjohnny@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/axiom-labs/rivescript-php
- * @since    0.3.0
+ * @since    0.4.0
  */
-class Topic extends Tag
+class Ok extends Tag
 {
     /**
      * Determines where this tag is allowed to
@@ -41,7 +41,7 @@ class Topic extends Tag
      *
      * @var string
      */
-    protected string $pattern = "/\{topic=(.+?)\}/u";
+    protected string $pattern = "/{ok}/u";
 
     /**
      * Parse the source.
@@ -54,14 +54,15 @@ class Topic extends Tag
     public function parse(string $source, SourceInput $input): string
     {
         if (!$this->sourceAllowed()) {
-            return $source;
+           return $source;
         }
 
         if ($this->hasMatches($source)) {
-            [$fullTag, $topic] = $this->getMatches($source)[0];
-
-            $source = str_replace($fullTag, '', $source);
-            synapse()->memory->shortTerm()->put("topic", $topic);
+            $begin = synapse()->brain->topic("__begin__");
+            if ($begin) {
+                $begin->setOk(true);
+            }
+            $source = str_replace("{ok}", "", $source);
         }
 
         return $source;
@@ -74,6 +75,6 @@ class Topic extends Tag
      */
     public function getTagName(): string
     {
-        return "topic";
+        return "ok";
     }
 }

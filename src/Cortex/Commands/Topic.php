@@ -40,9 +40,17 @@ class Topic implements Command
     public function parse(Node $node): void
     {
         if ($node->command() === '>') {
-            [$type, $topic] = explode(' ', $node->value());
+            $data = explode(' ', $node->value());
 
-            if ($type === 'topic') {
+            if (count($data) === 1) {
+                $type = "begin";
+                $topic = "__begin__";
+
+            } else {
+                [$type, $topic] = explode(' ', $node->value());
+            }
+
+            if ($type === 'topic' || $type === "begin") {
                 if (!synapse()->brain->topic($topic)) {
                     synapse()->brain->createTopic($topic);
                 }
@@ -51,7 +59,7 @@ class Topic implements Command
             }
         }
 
-        if ($node->command() === '<' && $node->value() === 'topic') {
+        if ($node->command() === '<' && ($node->value() === "topic" || $node->value() === "begin")) {
             synapse()->memory->shortTerm()->remove('topic');
         }
     }

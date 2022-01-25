@@ -57,15 +57,33 @@ class Output
     public function process(): string
     {
         $triggers = synapse()->brain->topic()->triggers();
+        $begin = synapse()->brain->topic("__begin__");
+
+        $this->output = '';
+//
+        if ($begin) {
+            synapse()->rivescript->say("Begin label found. Starting processing.");
+
+            $request = $begin->triggers()->get("request");
+
+            if ($request) {
+                $request['responses']->process();
+
+                /**
+                 * Update the triggers after running the begin request.
+                 */
+                $triggers = synapse()->brain->topic()->triggers();
+            }
+        }
 
         foreach ($triggers as $trigger => $data) {
             $this->searchTriggers($trigger);
-            if ($this->output !== 'Error: Response could not be determined.' && $this->output !== '') {
+            if ($this->output !== '') {
                 break;
             }
         }
 
-        return $this->output;
+        return trim($this->output);
     }
 
     /**
@@ -80,12 +98,12 @@ class Output
         synapse()->triggers->each(
             function ($class) use ($trigger) {
                 $triggerClass = "\\Axiom\\Rivescript\\Cortex\\Triggers\\$class";
-                $triggerClass = new $triggerClass(synapse()->input);
+                $triggerInstance = new $triggerClass(synapse()->input);
 
-                $found = $triggerClass->parse($trigger, synapse()->input);
+                $found = $triggerInstance->parse($trigger, synapse()->input);
 
                 if ($found === true) {
-                    synapse()->rivescript->say("Found trigger {$trigger}...");
+                    synapse()->rivescript->say("Found trigger {$trigger} van {$triggerClass}...");
                     synapse()->memory->shortTerm()->put('trigger', $trigger);
                     $this->output = $this->getResponse($trigger);
                     return false;
@@ -107,8 +125,10 @@ class Output
         $topic = synapse()->memory->shortTerm()->get('topic') ?? 'random';
         $originalTrigger = synapse()->brain->topic($topic)->triggers()->get($trigger);
 
+
         // FIXME: Temp fix for rsts
         if (isset($originalTrigger['responses']) === false) {
+            synapse()->rivescript->say("No response found.");
             $this->output = false;
             return $this->output;
         }
@@ -125,6 +145,14 @@ class Output
          * If so evaluate possible changes.
          */
         $processedTrigger = synapse()->brain->topic()->triggers()->get($trigger, null);
+        $processedTopic = synapse()->memory->shortTerm()->get('topic') ?? 'random';
+
+        synapse()->rivescript->say("Topic {$topic} vs {$processedTopic}");
+        if ($topic !== $processedTopic) {
+            synapse()->rivescript->say("Detected topic change");
+            //    $this->output = false;
+            //   return $this->getResponse( synapse()->input->source());
+        }
 
         if (isset($processedTrigger['redirect'])) {
             $target = synapse()->brain->topic()->triggers()->get($processedTrigger['redirect']);

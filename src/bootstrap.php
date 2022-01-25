@@ -112,7 +112,8 @@ $synapse->tags = Axiom\Collections\Collection::make([
     "Topic",
     "InlineRedirect",
     "ArrayTag",
-    "OptionalTag"
+    "OptionalTag",
+    "Ok",
 ]);
 
 $synapse->responses = Axiom\Collections\Collection::make(
