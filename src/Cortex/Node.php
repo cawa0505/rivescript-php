@@ -69,7 +69,6 @@ class Node
      */
     protected bool $isComment = false;
 
-
     /**
      * Is this an empty line.
      *

@@ -47,8 +47,9 @@ class Weighted extends Response implements ResponseContract
                     $this->responseQueueItem->order += (int)$matches[1];
                     $source = str_replace($matches[0], '', $source);
                 }
+
+                return $source;
             }
-            return $source;
         }
 
         return false;

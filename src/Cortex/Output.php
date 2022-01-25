@@ -109,7 +109,7 @@ class Output
                 if ($found === true) {
                     synapse()->rivescript->say("Found trigger {$trigger} van {$triggerClass}...");
                     synapse()->memory->shortTerm()->put('trigger', $trigger);
-                    $this->output = $this->getResponse($trigger);
+                    $this->output .= $this->getResponse($trigger);
                     return false;
                 }
             }
@@ -131,11 +131,11 @@ class Output
 
 
         // FIXME: Temp fix for rsts
-        if (isset($originalTrigger['responses']) === false) {
-            synapse()->rivescript->say("No response found.");
-            $this->output = false;
-            return $this->output;
-        }
+//        if (isset($originalTrigger['responses']) === false) {
+//            synapse()->rivescript->say("No response found.");
+//            $this->output = false;
+//            return $this->output;
+//        }
 
         /**
          * Get the best suitable response from

@@ -40,7 +40,8 @@ class Atomic extends Trigger
      */
     public function parse(string $trigger, Input $input): bool
     {
+        $oldTrigger = $trigger;
         $trigger = $this->parseTags($trigger, $input);
-        return strtolower($trigger) === $input->source();
+        return $trigger === $input->source();
     }
 }

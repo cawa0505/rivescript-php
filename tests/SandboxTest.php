@@ -14,8 +14,7 @@ uses()
 
 it("Should work", function() {
     $script=<<<EOF
-
- > begin
+        > begin
             + request
             * <get met> == undefined => <set met=true>{ok}
             * <get name> != undefined => <get name>: {ok}
@@ -31,11 +30,11 @@ EOF;
     $this->rivescript->setUservar("met", "true", "local-user");
     $this->rivescript->setUservar("name", "undefined", "local-user");
 
-//    $expected = "Hello, Bob.";
-//    $actual = $this->rivescript->reply("My name is bob");
+    $expected = "Hello, Bob.";
+    $actual = $this->rivescript->reply("My name is bob");
 
     $expected = "Bob: Hello human.";
-    $actual = $this->rivescript->reply("Hello bot");
+    $actual = $this->rivescript->reply("hello bot");
 
     $this->assertEquals($expected, $actual);
     echo "Response: {$actual}\n";

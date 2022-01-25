@@ -38,7 +38,7 @@ class Atomic extends Response implements ResponseContract
     public function parse()
     {
         if ($this->responseQueueItem()->getCommand() === '-') {
-            return $this->source();
+           return $this->source();
         }
 
         return false;
