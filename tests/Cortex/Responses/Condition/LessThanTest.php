@@ -19,12 +19,12 @@ uses()
     })
     ->group('responses');
 
-//it('passes valid < condition', function () {
-//    $expected = "Yes that is correct.";
-//    $actual = $this->rivescript->reply('Would you think 2 is less then 5');
-//
-//    $this->assertEquals($expected, $actual);
-//});
+it('passes valid < condition', function () {
+    $expected = "Yes that is correct.";
+    $actual = $this->rivescript->reply('Would you think 2 is less then 5');
+
+    $this->assertEquals($expected, $actual);
+});
 
 it('passes valid < condition using *', function () {
 
@@ -33,17 +33,17 @@ it('passes valid < condition using *', function () {
 
     $this->assertEquals($expected, $actual);
 });
-//
-//it('rejects invalid < condition', function () {
-//    $expected = "No that is incorrect. It is the other way around 15 is greater then 5.";
-//    $actual = $this->rivescript->reply('Do you think 15 is less than 5');
-//
-//    $this->assertEquals($expected, $actual);
-//});
-//
-//it('rejects invalid < condition using *', function () {
-//    $expected = "No that is incorrect.";
-//    $actual = $this->rivescript->reply('Do you think 10 is less then 2');
-//
-//    $this->assertEquals($expected, $actual);
-//});
+
+it('rejects invalid < condition', function () {
+    $expected = "No that is incorrect. It is the other way around 15 is greater then 5.";
+    $actual = $this->rivescript->reply('Do you think 15 is less than 5');
+
+    $this->assertEquals($expected, $actual);
+});
+
+it('rejects invalid < condition using *', function () {
+    $expected = "No that is incorrect.";
+    $actual = $this->rivescript->reply('Do you think 10 is less then 2');
+
+    $this->assertEquals($expected, $actual);
+});

@@ -43,6 +43,11 @@ abstract class Response
     protected string $source = '';
 
     /**
+     * @var string
+     */
+    protected string $original = "";
+
+    /**
      * Responses must implement this method to
      * indicate the response type.
      *
@@ -59,6 +64,7 @@ abstract class Response
     public function __construct(string $source, ResponseQueueItem $responseQueueItem)
     {
         $this->source = $source;
+        $this->original = $this->source;
         $this->responseQueueItem = $responseQueueItem;
     }
 
@@ -68,6 +74,14 @@ abstract class Response
     public function source(): string
     {
         return $this->source;
+    }
+
+    /**
+     * @return string
+     */
+    public function original(): string
+    {
+        return $this->original;
     }
 
     /**

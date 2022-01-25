@@ -31,7 +31,7 @@ interface Condition
      *
      * @param string $source
      *
-     * @return false|string
+     * @return bool
      */
-    public function parse(string $source);
+    public function matches(string $source): bool;
 }

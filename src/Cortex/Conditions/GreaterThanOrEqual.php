@@ -34,17 +34,17 @@ class GreaterThanOrEqual extends Condition implements ConditionContract
      *
      * @param string $source The source to parse.
      *
-     * @return false|string
+     * @return bool
      */
-    public function parse(string $source)
+    public function matches(string $source): bool
     {
-        $pattern = "/^([\S]+) (>=) ([\S]+) =>\s(.*)$/";
+        $pattern = "/^([\S]+) (>=) ([\S]+) =>/";
 
         if ($this->matchesPattern($pattern, $source) === true) {
             $matches = $this->getMatchesFromPattern($pattern, $source);
 
-            if ((isset($matches[0]) === true && count($matches[0]) >= 2) && $matches[0][1] >= $matches[0][3]) {
-                return $matches[0][4];
+            if ((isset($matches[0]) === true && count($matches[0]) >= 2)) {
+                return ($matches[0][1] >= $matches[0][3]);
             }
         }
 

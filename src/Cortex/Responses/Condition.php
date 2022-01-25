@@ -43,10 +43,16 @@ class Condition extends Response implements ResponseContract
                 $class = "\\Axiom\\Rivescript\\Cortex\\Conditions\\{$class}";
                 $class = new $class();
 
-                $result = $class->parse($this->source());
+                $match = $class->matches($this->original());
 
-                if ($result !== false) {
-                    return $result;
+                if ($match === true) {
+                    $pattern = "/^([\S]+) (==|eq|!=|ne|<>|<|<=|>|>=) ([\S]+) =>\s(.*)$/";
+                    if ($this->matchesPattern($pattern, $this->source()) === true) {
+                        $matches = $this->getMatchesFromPattern($pattern, $this->source());
+                        $condition = $matches[0][0];
+
+                        return str_replace($condition, "",  $this->source());
+                    }
                 }
             }
         }

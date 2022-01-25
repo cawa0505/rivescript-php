@@ -15,31 +15,27 @@ uses()
 it("Should work", function() {
     $script=<<<EOF
 
-> begin
-    + request
-    * <get name> eq undefined => {topic=newuser}{ok}
-    * <get name> ne undefined => Hello <get name>{ok}
-    - {ok}
-< begin
+ > begin
+            + request
+            * <get met> == undefined => <set met=true>{ok}
+            * <get name> != undefined => <get name>: {ok}
+            - {ok}
+        < begin
+        + hello bot
+        - Hello human.
 
-> topic newuser
-    + my name is *
-    - <set name=<star>>Nice to meet you <star>!{topic=random}
-
-    + *
-    - before we start I need your username <get name>
-< topic
-
-+ go
-- Hi {topic=newuser}
-
-+ hello bot
-- Hello human.
+        + my name is *
+        - <set name=<formal>>Hello, <get name>.
 EOF;
     $this->rivescript->stream($script);
+    $this->rivescript->setUservar("met", "true", "local-user");
+    $this->rivescript->setUservar("name", "undefined", "local-user");
 
-    $expected = "Hi";
-    $actual = $this->rivescript->reply("go");
+//    $expected = "Hello, Bob.";
+//    $actual = $this->rivescript->reply("My name is bob");
+
+    $expected = "Bob: Hello human.";
+    $actual = $this->rivescript->reply("Hello bot");
 
     $this->assertEquals($expected, $actual);
     echo "Response: {$actual}\n";
