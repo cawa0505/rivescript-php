@@ -67,7 +67,11 @@ class Output
             $request = $begin->triggers()->get("request");
 
             if ($request) {
-                $request['responses']->process();
+                $this->output = $request['responses']->process();
+
+                if ($begin->isOk() === false) {
+                    return $this->output;
+                }
 
                 /**
                  * Update the triggers after running the begin request.
