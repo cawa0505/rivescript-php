@@ -59,8 +59,8 @@ class Output
         $triggers = synapse()->brain->topic()->triggers();
         $begin = synapse()->brain->topic("__begin__");
 
-        $this->output = '';
-//
+        $this->output = "";
+
         if ($begin) {
             synapse()->rivescript->say("Begin label found. Starting processing.");
 

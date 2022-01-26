@@ -35,7 +35,7 @@ trait Tags
      */
     protected function parseTags(string $source): string
     {
-       // $source = $this->escapeUnknownTags($source);
+        $source = $this->escapeUnknownTags($source);
 
         $tags = synapse()->memory->tags();
         foreach ($tags as $tag) {
