@@ -45,6 +45,7 @@ trait Tags
         $source = str_replace("\x00", "<", $source);
         $source = str_replace("\x01", ">", $source);
 
+        return $source;
         return trim($source);
     }
 

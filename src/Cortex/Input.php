@@ -105,8 +105,8 @@ class Input
 
       //  $this->source = mb_strtolower($this->original);
         $this->source = $this->original;
-        $this->source = preg_replace($patterns, $replacements, $this->source);
+       // $this->source = preg_replace($patterns, $replacements, $this->source);
        // $this->source = preg_replace('/[^\pL\d\s]+/u', '', $this->source);
-        $this->source = remove_whitespace($this->source);
+       // $this->source = remove_whitespace($this->source);
     }
 }
