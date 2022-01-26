@@ -37,13 +37,13 @@ trait Tags
     {
 
         $tags = synapse()->memory->tags();
+        $source = $this->escapeUnknownTags($source);
+
         foreach ($tags as $tag) {
             $source = $tag->parse($source, synapse()->input);
         }
-//        $source = $this->escapeUnknownTags($source);
-//
-//        $source = str_replace("\x00", "<", $source);
-//        $source = str_replace("\x01", ">", $source);
+
+        $source = str_replace(["&#60;", "&#62;"], ["<", ">"], $source);
 
         return $source;
         return trim($source);
@@ -62,23 +62,26 @@ trait Tags
 
         $knownTags = synapse()->memory->tags()->keys()->all();
 
-        preg_match_all('/<(.+?[^<])>/', $source, $matches);
+        $pattern = '/<(\S*?)*>.*?<\/\1>/s';
+
+        preg_match_all($pattern, $source, $matches);
 
         $index = 0;
-        if (is_array($matches[$index]) && isset($matches[$index][0]) && is_null($knownTags) === false) {
+        if (is_array($matches[$index]) && isset($matches[$index][0]) && is_null($knownTags) === false && count($matches) == 2) {
             $matches = $matches[$index];
 
             foreach ($matches as $match) {
-                $str = str_replace(['<', '>'], "", $match);
+                $str = str_replace(['<', '>'], ["&#60;", "&#62;"], $match);
                 $parts = explode(' ', $str);
                 $tag = $parts[0] ?? "";
 
-                if (in_array($tag, $knownTags, true) === false && $tag != '') {
-                    $source = str_replace($match, "\x00{$tag}\x01", $source);
+                if (in_array($tag, $knownTags, true) === false) {
+                    $source = str_replace($match, $str, $source);
                 }
             }
         }
 
         return $source;
+
     }
 }

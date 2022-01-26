@@ -51,6 +51,7 @@ class Condition extends Response implements ResponseContract
                         $matches = $this->getMatchesFromPattern($pattern, $this->source());
                         $condition = $matches[0][0];
 
+                        $ret = str_replace($condition, "",  $this->source());
                         return str_replace($condition, "",  $this->source());
                     }
 

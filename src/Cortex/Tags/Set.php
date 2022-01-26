@@ -41,7 +41,7 @@ class Set extends Tag
      *
      * @var string
      */
-    protected string $pattern = '/<set (.+?)=(.+?)>/u';
+    protected string $pattern = '/<set (.+?)=(.+)>/u';
 
     /**
      * Parse the source.

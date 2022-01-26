@@ -230,7 +230,7 @@ class Rivescript extends ContentLoader
     {
 
         // FIXME: Must be $user, $message, Sscope
-//        $msg = $this->stripNasties($msg, "");
+    //    $msg = $this->stripNasties($msg, "");
         synapse()->rivescript->say("Asked to reply to [{$user}] {$msg}");
 
 

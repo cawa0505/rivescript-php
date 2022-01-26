@@ -94,12 +94,38 @@ class Node
         $this->source = remove_whitespace($source);
         $this->number = $number;
 
+      //  $this->source = $this->escape($this->source);
+
         $this->determineEmpty();
         $this->determineComment();
         $this->determineCommand();
         $this->determineValue();
     }
 
+    private function escape(string $source) {
+        $knownTags = synapse()->memory->tags()->keys()->all();
+
+        $pattern = '/<(\S*?)*>.*?<\/\1>|<^.*?\/>/';
+
+        preg_match_all($pattern, $source, $matches);
+
+        $index = 0;
+        if (is_array($matches[$index]) && isset($matches[$index][0]) && is_null($knownTags) === false && count($matches) == 2) {
+             $matches = $matches[$index];
+
+            foreach ($matches as $match) {
+                $str = str_replace(['<', '>'], "", $match);
+                $parts = explode(' ', $str);
+                $tag = $parts[0] ?? "";
+
+                if (in_array($tag, $knownTags, true) === false) {
+                    $source = str_replace($match, "\x00{$tag}\x01", $source);
+                }
+            }
+        }
+
+        return $source;
+    }
     /**
      * Returns the node's command trigger.
      *

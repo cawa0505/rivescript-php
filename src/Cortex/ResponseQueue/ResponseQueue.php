@@ -117,9 +117,9 @@ class ResponseQueue extends Collection
         foreach ($responses as $class) {
             if (class_exists("\\Axiom\\Rivescript\\Cortex\\Responses\\{$class}")) {
                 $class = "\\Axiom\\Rivescript\\Cortex\\Responses\\{$class}";
-                $class = new $class($response, $item);
+                $instance = new $class($response, $item);
 
-                $result = $class->parse();
+                $result = $instance->parse();
 
                 if ($result !== false) {
                     return $result;
