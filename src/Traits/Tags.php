@@ -40,10 +40,10 @@ trait Tags
         foreach ($tags as $tag) {
             $source = $tag->parse($source, synapse()->input);
         }
-        $source = $this->escapeUnknownTags($source);
-
-        $source = str_replace("\x00", "<", $source);
-        $source = str_replace("\x01", ">", $source);
+//        $source = $this->escapeUnknownTags($source);
+//
+//        $source = str_replace("\x00", "<", $source);
+//        $source = str_replace("\x01", ">", $source);
 
         return $source;
         return trim($source);
