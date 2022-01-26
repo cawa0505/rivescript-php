@@ -35,12 +35,12 @@ trait Tags
      */
     protected function parseTags(string $source): string
     {
-        $source = $this->escapeUnknownTags($source);
 
         $tags = synapse()->memory->tags();
         foreach ($tags as $tag) {
             $source = $tag->parse($source, synapse()->input);
         }
+        $source = $this->escapeUnknownTags($source);
 
         $source = str_replace("\x00", "<", $source);
         $source = str_replace("\x01", ">", $source);
