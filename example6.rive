@@ -1,5 +1,11 @@
++ my name is *
+* <get name> != undefined => <set oldname=<get name>>I thought\s
+  ^ your name was <get oldname>?
+  ^ <set name=<formal>>
+- <set name=<formal>>OK.
+
++ what is my name
+- Your name is <get name>, right?
+
 + html test
 - <set name=<b>Name</b>>This has some non-RS <em>tags</em> in it.
-
-+ test
-- <get name> you set

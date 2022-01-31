@@ -57,15 +57,23 @@ class Set extends Tag
             return $source;
         }
 
-        while ($this->hasMatches($source)) {
-            $matches = $this->getMatches($source);
+        if ($this->hasMatches($source)) {
+            $parsed = $this->secureSource($source, "set");
+            $parsed = explode('=', $parsed['response']);
 
-            foreach ($matches as $match) {
-                $key = $match[1];
-                $value = str_replace(["&#60;", "&#62;"], ["<", ">"], $match[2]);
-                synapse()->memory->user($input->user())->put($key, $value);
-                $source = str_replace($match[0], '', $source);
+            $matches = $this->getMatches($source);
+            $match = $matches[0];
+
+            $key = $match[1];
+            $value = $match[2];
+
+            if (count($parsed) === 1) {
+                $value = $parsed[0];
             }
+
+            synapse()->memory->user($input->user())->put($key, $value);
+            $source = str_replace("<set {$key}={$value}>", '', $source);
+
         }
 
 
