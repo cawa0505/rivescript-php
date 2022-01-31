@@ -84,7 +84,7 @@ class Brain
                 $error = $node->checkSyntax();
 
                 if ($error) {
-                    $this->master->say("Error: {$error}");
+                    $this->master->say("Error: :error", ['error' => $error]);
                 }
                 if ($node->isInterrupted() === true || $node->isComment() === true || $node->isEmpty()) {
                     continue;

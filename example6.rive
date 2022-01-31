@@ -1,20 +1,5 @@
-> begin
-    + request
-    * <get name> eq undefined => {topic=newuser}{ok}
-    * <get name> ne undefined => Hello <get name>{ok}
-    - {ok}
-< begin
++ html test
+- <set name=<b>Name</b>>This has some non-RS <em>tags</em> in it.
 
-> topic newuser
-    + my name is *
-    - <set name=<star>>Nice to meet you <star>!{topic=random}
-
-    + *
-    - before we start I need your username <get name>
-< topic
-
-+ go
-- Hi {topic=newuser}
-
-+ hello bot
-- Hello human.
++ test
+- <get name> you set

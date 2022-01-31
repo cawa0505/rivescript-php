@@ -75,10 +75,9 @@ class ChatCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $this->rivescript->onSay = function (string $msg, int $verbosity) use ($output) {
+            $this->rivescript->onSay = static function (string $msg, int $verbosity) use ($output) {
                 $output->writeln("Say: {$msg}", $verbosity);
             };
-
 
             $source = $this->loadFiles($input->getArgument('source'));
 
@@ -87,10 +86,14 @@ class ChatCommand extends Command
             $loadedSource = explode('/', $input->getArgument('source'));
             $loadedSource = end($loadedSource);
 
+            $debugMode = (synapse()->memory->global()->get('debug')) ? "On" : "Off";
+
             $output->writeln('RiveScript Interpreter (PHP) -- Interactive Console v2.0');
             $output->writeln('--------------------------------------------------------');
             $output->writeln('RiveScript Version:       2.0');
             $output->writeln('Currently Loaded Source:  ' . $loadedSource);
+            $output->writeln('Debug mode: ' . $debugMode);
+
             $output->writeln('');
             $output->writeln('You are now chatting with a RiveScript bot. Type a message and press Return');
             $output->writeln('to send it. When finished, type "/quit" to exit the interactive console.');

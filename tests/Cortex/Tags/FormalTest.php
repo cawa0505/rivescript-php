@@ -50,10 +50,3 @@ it("will transform <formal> as alias of {formal}<star>{/formal} (Multi-Word)", f
     $this->assertEquals($expected, $actual);
 });
 
-it("RSTS formal test", function () {
-    $this->rivescript->stream("// RiveScript source is included as a YAML\n// literal-style multi-line string.\n+ hello bot\n- Hello human!\n\n+ how are you\n- Good, you?\n- Alright, how are you?\n\n+ my name is *\n- <set name=<formal>>Nice to meet you, <get name>.\n\n+ who am i\n- Your name is <get name>, right?\n");
-    $expected = "Nice to meet you, Alice.";
-    $actual = $this->rivescript->reply("my name formal is Alice");
-
-    $this->assertEquals($expected, $actual);
-});

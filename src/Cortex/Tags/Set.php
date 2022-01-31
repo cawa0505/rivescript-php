@@ -41,7 +41,7 @@ class Set extends Tag
      *
      * @var string
      */
-    protected string $pattern = '/<set (.+?)=(.+)>/u';
+    protected string $pattern = '/<set (.+?)=(.+?)>/u';
 
     /**
      * Parse the source.
@@ -61,7 +61,9 @@ class Set extends Tag
             $matches = $this->getMatches($source);
 
             foreach ($matches as $match) {
-                synapse()->memory->user($input->user())->put($match[1], $match[2]);
+                $key = $match[1];
+                $value = str_replace(["&#60;", "&#62;"], ["<", ">"], $match[2]);
+                synapse()->memory->user($input->user())->put($key, $value);
                 $source = str_replace($match[0], '', $source);
             }
         }

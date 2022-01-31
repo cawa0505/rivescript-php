@@ -69,6 +69,14 @@ class Rivescript extends ContentLoader
     protected bool $utf8 = false;
 
     /**
+     * Flag to indicate debug mode
+     * is enabled or not.
+     *
+     * @var bool
+     */
+    public bool $debug = false;
+
+    /**
      * Create a new Rivescript instance.
      *
      * @throws \Axiom\Rivescript\Exceptions\ContentLoadingException
@@ -196,6 +204,7 @@ class Rivescript extends ContentLoader
      * @param bool   $utf8
      *
      * @return string
+     * @deprecated
      */
     private function stripNasties(string $string, bool $utf8): string
     {
@@ -205,16 +214,78 @@ class Rivescript extends ContentLoader
     /**
      * Log a message to say.
      *
-     * @param string $message   The message to print out
-     * @param int    $verbosity The verbosity level of the message
+     * @param string $message   The message to print out.
+     * @param array  $args      (format) arguments for the message.
+     * @param int    $verbosity The verbosity level of the message.
      *
      * @return void
      */
-    public function say(string $message, int $verbosity = Rivescript::VERBOSITY_NORMAL): void
+    public function say(string $message, array $args = [], int $verbosity = Rivescript::VERBOSITY_NORMAL): void
     {
+
+        $message = $this->formatString($message, $args);
+
         if ($this->onSay) {
             call_user_func($this->onSay, $message, $verbosity);
         }
+    }
+
+    /**
+     * Write a warning.
+     *
+     * @param string $message   The message to print out.
+     * @param array  $args      (format) arguments for the message.
+     * @param int    $verbosity The verbosity level of the message.
+     *
+     * @return void
+     */
+    public function warn(string $message, array $args = [], int $verbosity = Rivescript::VERBOSITY_NORMAL): void
+    {
+        $message = $this->formatString($message, $args);
+
+        if ($this->onSay) {
+            call_user_func($this->onSay, $message, $verbosity);
+        }
+    }
+
+
+    /**
+     * Create a string PDO style/
+     *
+     * @param string $msg  The message to write.
+     * @param array  $args The arguments for the message.
+     *
+     * @return string
+     */
+    private function formatString(string $msg, array $args = []): string
+    {
+        $words = explode(' ', $msg);
+        $parameters = array_filter($words, static function (string $part) {
+            return ($part[0] === ':');
+        });
+
+        if (is_array($args) === true && count($args) > 0) {
+            foreach ($parameters as $param) {
+                $key = substr($param, 1);
+                if (isset($args[$key]) === true) {
+                    $msg = str_replace($param, $args[$key], $msg);
+                }
+            }
+        }
+
+        return $msg;
+    }
+
+    /**
+     * Enable debug mode.
+     *
+     * @param bool $enabled Enable true/false.
+     *
+     * @return void
+     */
+    public function enableDebugMode(bool $enabled = true): void
+    {
+        synapse()->memory->global()->put('debug', true);
     }
 
     /**
@@ -230,8 +301,8 @@ class Rivescript extends ContentLoader
     {
 
         // FIXME: Must be $user, $message, Sscope
-    //    $msg = $this->stripNasties($msg, "");
-        synapse()->rivescript->say("Asked to reply to [{$user}] {$msg}");
+        //    $msg = $this->stripNasties($msg, "");
+        synapse()->rivescript->say("Asked to reply to :user :msg", ['user' => $user, 'message' => $msg]);
 
 
         $input = new Input($msg, $user);

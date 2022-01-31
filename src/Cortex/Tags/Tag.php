@@ -53,6 +53,15 @@ abstract class Tag implements TagContract
     protected string $pattern = "";
 
     /**
+     * This variable can be overwritten by
+     * a tag class to indicate it needs more
+     * secure parsing.
+     *
+     * @var bool
+     */
+    protected bool $secure = false;
+
+    /**
      * Create a new Tag instance.
      *
      * @param string $sourceType
@@ -75,6 +84,80 @@ abstract class Tag implements TagContract
     {
         return in_array($this->sourceType, $this->allowedSources, true);
     }
+
+    /**
+     * Detect a tag and its value.
+     *
+     * @param string $content The string to parse.
+     *
+     * @return array
+     */
+    private function _parseTag(string $content, string $tagName): array
+    {
+        $tag = "";
+        $len = strlen($content);
+        $reminder = '';
+
+        for ($i = 0; $i < $len; $i++) {
+            if (strtolower($tag) === strtolower($tagName)) {
+                $reminder = substr($content, $i + 1);
+                break;
+            }
+
+            if ($content[$i] === ' ') {
+                $reminder = substr($content, $i + 1);
+                break;
+            } elseif ($content[$i] === '>') {
+                $reminder = substr($content, $i + 1);
+                return ['response' => "<" . $tag . ">", 'reminder' => $reminder];
+            }
+
+            $tag .= $content[$i];
+        }
+
+        $result = $this->secureSource($reminder, $tagName, ">");
+        $reminder = $result['reminder'];
+
+        $response = (isset($tags[$tag]) === true) ? $result['response'] : "<" . $tag . " " . $result['response'] . ">";
+
+        return ['response' => $response, 'reminder' => $reminder];
+    }
+
+    /**
+     * Parse tags if html is used.
+     *
+     * @param string $content The content string.
+     * @param string $tagName The tag to parse.
+     * @param string $endTag  The endTag.
+     *
+     * @return array
+     */
+    public function secureSource(string $content, string $tagName, string $endTag = ''): array
+    {
+
+        $response = '';
+        $reminder = $content;
+        $nextTag = strpos($reminder, '<');
+        $nextEnd = $endTag ? strpos($reminder, $endTag) : strlen($reminder);
+
+        while ($reminder !== '' && $nextTag > -1 && $nextTag < $nextEnd) {
+            $response .= substr($reminder, 0, $nextTag);
+            $reminder = substr($reminder, $nextTag + 1);
+
+            $result = $this->_parseTag($reminder, $tagName);
+
+            $response .= $result['response'];
+            $reminder = $result['reminder'];
+            $nextTag = strpos($reminder, '<');
+            $nextEnd = $endTag ? strpos($reminder, $endTag) : strlen($reminder);
+        }
+
+        $response .= substr($reminder, 0, $nextEnd);
+        $reminder = substr($nextEnd, $nextEnd + strlen($endTag));
+
+        return ['response' => $response, 'reminder' => $reminder];
+    }
+
 
     /**
      * Does the source have any matches?
@@ -100,5 +183,8 @@ abstract class Tag implements TagContract
         return $this->getMatchesFromPattern($this->pattern, $source) ?? [];
     }
 
+    /**
+     * @return mixed
+     */
     abstract public function getTagName();
 }
