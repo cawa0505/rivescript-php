@@ -241,7 +241,7 @@ class Rivescript extends ContentLoader
      */
     public function warn(string $message, array $args = [], int $verbosity = Rivescript::VERBOSITY_NORMAL): void
     {
-        $message = $this->formatString($message, $args);
+        $message = "[WARNING]: ".$this->formatString($message, $args);
 
         if ($this->onSay) {
             call_user_func($this->onSay, $message, $verbosity);
@@ -302,7 +302,7 @@ class Rivescript extends ContentLoader
 
         // FIXME: Must be $user, $message, Sscope
         //    $msg = $this->stripNasties($msg, "");
-        synapse()->rivescript->say("Asked to reply to :user :msg", ['user' => $user, 'message' => $msg]);
+        synapse()->rivescript->say("Asked to reply to :user :msg", ['user' => $user, 'msg' => $msg]);
 
 
         $input = new Input($msg, $user);

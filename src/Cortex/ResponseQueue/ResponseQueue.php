@@ -121,7 +121,7 @@ class ResponseQueue extends Collection
 
                 $result = $instance->parse();
 
-                if ($result !== false) {
+                if ($result !== false && $result !== "") {
                     return $result;
                 }
             }

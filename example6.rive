@@ -1,11 +1,30 @@
-+ my name is *
-* <get name> != undefined => <set oldname=<get name>>I thought\s
-  ^ your name was <get oldname>?
-  ^ <set name=<formal>>
-- <set name=<formal>>OK.
+    ! var globaltest = set test name test
 
-+ what is my name
-- Your name is <get name>, right?
++ bleep
+- <get test_name>
 
-+ html test
-- <set name=<b>Name</b>>This has some non-RS <em>tags</em> in it.
+        + test
+        - {topic=test}{@<get test_name>}
+
+        + test without redirect
+        - {topic=test}<get test_name>
+
+        + set test name *
+        - <set test_name=<star>>{@test}
+
+        + get global test
+        @ <bot globaltest>
+
+        + get bad global test
+        @ <bot badglobaltest>
+
+        > topic test
+          + test
+          - hello <get test_name>!{topic=random}
+
+          + *
+          - {topic=random}<@>
+        < topic
+
+        + *
+        - Wildcard "<star>"!

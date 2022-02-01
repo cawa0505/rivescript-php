@@ -56,10 +56,11 @@ class Output
      */
     public function process(): string
     {
-        $triggers = synapse()->brain->topic()->triggers();
+        $triggers = $x = synapse()->brain->topic()->triggers();
         $begin = synapse()->brain->topic("__begin__");
 
         $this->output = "";
+
 
         if ($begin) {
             synapse()->rivescript->say("Begin label found. Starting processing.");
@@ -155,12 +156,27 @@ class Output
         if ($topic !== $processedTopic) {
             synapse()->rivescript->say("Detected topic change");
             //    $this->output = false;
-            //   return $this->getResponse( synapse()->input->source());
+//               return $this->getResponse( synapse()->input->source());
         }
 
         if (isset($processedTrigger['redirect'])) {
             $target = synapse()->brain->topic()->triggers()->get($processedTrigger['redirect']);
+
+            synapse()->rivescript->say("topic changed from :old to :new.", [
+                "old" => $topic,
+                "new" => $processedTrigger['redirect'],
+
+            ]);
+
             if ($target === null) {
+                synapse()->rivescript->warn("topic :new was not found. Restoring topic :old", [
+                    "new" => $processedTrigger['redirect'],
+                    "old" => $topic,
+                ]);
+
+                $input = new Input($processedTrigger["redirect"], "local-user");
+                synapse()->input = $input;
+                synapse()->memory->shortTerm()->put("topic", $topic);
                 return "";
                 $this->output = false;
                 return $this->getResponse("*");
