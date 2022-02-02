@@ -154,7 +154,11 @@ class Output
 
         synapse()->rivescript->say("Topic {$topic} vs {$processedTopic}");
         if ($topic !== $processedTopic) {
-            synapse()->rivescript->say("Detected topic change");
+            synapse()->rivescript->say("topic changed from :old to :new.", [
+                "old" => $topic,
+                "new" => synapse()->memory->shortTerm()->get('topic'),
+
+            ]);
             //    $this->output = false;
 //               return $this->getResponse( synapse()->input->source());
         }
@@ -162,16 +166,11 @@ class Output
         if (isset($processedTrigger['redirect'])) {
             $target = synapse()->brain->topic()->triggers()->get($processedTrigger['redirect']);
 
-            synapse()->rivescript->say("topic changed from :old to :new.", [
-                "old" => $topic,
-                "new" => $processedTrigger['redirect'],
-
-            ]);
 
             if ($target === null) {
                 synapse()->rivescript->warn("topic :new was not found. Restoring topic :old", [
                     "new" => $processedTrigger['redirect'],
-                    "old" => $topic,
+                    "old" => synapse()->memory->shortTerm()->get('topic'),
                 ]);
 
                 $input = new Input($processedTrigger["redirect"], "local-user");
@@ -187,7 +186,10 @@ class Output
              * user input changes from the line that triggered "Trigger A" to
              * be "Trigger A" as the user input.
              */
-            synapse()->rivescript->say("{trigger} triggered a redirect to {$processedTrigger['redirect']}");
+            synapse()->rivescript->say("Trigger :trigger caused a redirect to :redirect.", [
+                'trigger' => $trigger,
+                'redirect' => $processedTrigger['redirect'],
+            ]);
 
             $input = new Input($processedTrigger['redirect'], 0);
             $this->input = $input;

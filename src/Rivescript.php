@@ -241,7 +241,7 @@ class Rivescript extends ContentLoader
      */
     public function warn(string $message, array $args = [], int $verbosity = Rivescript::VERBOSITY_NORMAL): void
     {
-        $message = "[WARNING]: ".$this->formatString($message, $args);
+        $message = "[WARNING]: " . $this->formatString($message, $args);
 
         if ($this->onSay) {
             call_user_func($this->onSay, $message, $verbosity);
@@ -259,18 +259,16 @@ class Rivescript extends ContentLoader
      */
     private function formatString(string $msg, array $args = []): string
     {
-        $words = explode(' ', $msg);
-        $parameters = array_filter($words, static function (string $part) {
-            return ($part[0] === ':');
-        });
+        $search = [];
+        $replace = [];
 
         if (is_array($args) === true && count($args) > 0) {
-            foreach ($parameters as $param) {
-                $key = substr($param, 1);
-                if (isset($args[$key]) === true) {
-                    $msg = str_replace($param, $args[$key], $msg);
-                }
+            foreach ($args as $key => $value) {
+                $search [] = ":{$key}";
+                $replace [] = $value;
             }
+
+            $msg = str_replace($search, $replace, $msg);
         }
 
         return $msg;

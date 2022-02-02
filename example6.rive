@@ -26,5 +26,11 @@
           - {topic=random}<@>
         < topic
 
+        + html test
+        - <set name=<b>Name</b>>This has some non-RS <em>tags</em> in it.
+
+        + html result
+        - <get name>
+
         + *
         - Wildcard "<star>"!

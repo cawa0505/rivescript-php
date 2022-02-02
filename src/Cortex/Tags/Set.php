@@ -41,7 +41,7 @@ class Set extends Tag
      *
      * @var string
      */
-    protected string $pattern = '/<set (.+?)=(.+?)>/u';
+    protected string $pattern = '/<set (.+?)=(.+?)>/U';
 
     /**
      * Parse the source.
@@ -62,17 +62,15 @@ class Set extends Tag
             $parsed = explode('=', $parsed['response']);
 
             $matches = $this->getMatches($source);
-            $match = $matches[0];
 
-            $key = $match[1];
-            $value = $match[2];
+            foreach($matches as $match) {
+                $key = $match[1];
+                $value = $match[2];
 
-            if (count($parsed) === 1) {
-                $value = $parsed[0];
+                synapse()->memory->user($input->user())->put($key, $value);
+                $source = str_replace("<set {$key}={$value}>", '', $source);
             }
 
-            synapse()->memory->user($input->user())->put($key, $value);
-            $source = str_replace("<set {$key}={$value}>", '', $source);
 
         }
 
