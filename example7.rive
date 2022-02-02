@@ -1,0 +1,16 @@
+ + test
+        - {topic=test}{@hi}
+
+        + test *
+        - {topic=test}<@>
+
+        > topic test
+          + hi
+          - hello
+
+          + *
+          - {topic=random}<@>
+        < topic
+
+        + *
+        - Wildcard "<star>"!

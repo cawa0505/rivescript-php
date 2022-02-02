@@ -174,10 +174,11 @@ class Output
                 ]);
 
                 $input = new Input($processedTrigger["redirect"], "local-user");
-                synapse()->input = $input;
+           //     synapse()->input = $input;
                 synapse()->memory->shortTerm()->put("topic", $topic);
-                return "";
-                $this->output = false;
+
+                return $this->getResponse("*");
+                return  $this->output;
                 return $this->getResponse("*");
             }
 
