@@ -56,7 +56,7 @@ class Logger
      */
     public function debug(string $message, array $context = []): bool
     {
-        return $this->logger->addDebug($message, $context);
+        return $this->logger->debug($message, $context);
     }
 
     /**
@@ -69,6 +69,6 @@ class Logger
      */
     public function warning(string $message, array $context = []): bool
     {
-        return $this->logger->addWarning($message, $context);
+        return $this->logger->warning($message, $context);
     }
 }
