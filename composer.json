@@ -40,8 +40,8 @@
   },
   "require": {
     "php": ">=7.4",
-    "symfony/console": "^5.0",
-    "symfony/finder": "^3.2",
+    "symfony/console": "~5.0",
+    "symfony/finder": "~5.0",
     "axiom/collections": "~2.0"
   },
   "require-dev": {
