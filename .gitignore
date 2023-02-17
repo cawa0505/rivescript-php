@@ -8,3 +8,4 @@ composer.lock
 /changes.txt
 /sandbox/
 /.phpunit.result.cache
+/.vscode/
