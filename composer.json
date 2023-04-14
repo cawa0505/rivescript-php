@@ -39,9 +39,9 @@
     }
   },
   "require": {
-    "php": ">=7.4",
-    "symfony/console": "~5.0",
-    "symfony/finder": "~5.0",
+    "php": ">=8",
+    "symfony/console": "~6.0",
+    "symfony/finder": "~6.0",
     "axiom/collections": "~2.0"
   },
   "require-dev": {
