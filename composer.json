@@ -25,6 +25,12 @@
       "vendor/bin/pest"
     ]
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@gitlab.com:zeng.tw/axiom-collections.git"
+    }
+  ],
   "autoload": {
     "files": [
       "src\\helpers.php"
@@ -42,7 +48,7 @@
     "php": ">=8",
     "symfony/console": "^6",
     "symfony/finder": "^6",
-    "axiom/collections": "~2.0"
+    "axiom/collections": "dev-main"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
